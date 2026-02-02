@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"os"
 	"strings"
 	"testing"
 )
@@ -45,15 +46,34 @@ func TestRun(t *testing.T) {
 
 func TestMain(t *testing.T) {
 	// Test that main function runs without panic
+	// We redirect stdout temporarily to avoid interfering with test output
+	oldStdout := os.Stdout
+	r, w, _ := os.Pipe()
+	os.Stdout = w
+
 	defer func() {
+		os.Stdout = oldStdout
+		w.Close()
 		if r := recover(); r != nil {
 			t.Errorf("main() panicked: %v", r)
 		}
 	}()
 
 	// Call main to ensure it works
-	// We can't easily capture stdout, but we can verify it doesn't panic
-	// main()
-	// Note: Commenting out the actual call to avoid interfering with test output
-	t.Log("Main function exists and compiles correctly")
+	main()
+
+	// Restore stdout and close pipe
+	os.Stdout = oldStdout
+	w.Close()
+
+	// Read the output to ensure something was written
+	var buf bytes.Buffer
+	_, err := buf.ReadFrom(r)
+	if err != nil {
+		t.Errorf("Error reading output: %v", err)
+	}
+
+	if buf.Len() == 0 {
+		t.Error("main() produced no output")
+	}
 }
