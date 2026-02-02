@@ -1,0 +1,351 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>calculator: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/test/code-coverage/calculator/calculator.go (100.0%)</option>
+				
+				<option value="file1">github.com/test/code-coverage/main.go (97.6%)</option>
+				
+				<option value="file2">github.com/test/code-coverage/stringutils/stringutils.go (100.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package calculator
+
+import "errors"
+
+// Add returns the sum of two integers
+func Add(a, b int) int <span class="cov8" title="1">{
+        return a + b
+}</span>
+
+// Subtract returns the difference of two integers
+func Subtract(a, b int) int <span class="cov8" title="1">{
+        return a - b
+}</span>
+
+// Multiply returns the product of two integers
+func Multiply(a, b int) int <span class="cov8" title="1">{
+        return a * b
+}</span>
+
+// Divide returns the quotient of two integers
+func Divide(a, b int) (int, error) <span class="cov8" title="1">{
+        if b == 0 </span><span class="cov8" title="1">{
+                return 0, errors.New("division by zero")
+        }</span>
+        <span class="cov8" title="1">return a / b, nil</span>
+}
+
+// IsEven checks if a number is even
+func IsEven(n int) bool <span class="cov8" title="1">{
+        return n%2 == 0
+}</span>
+
+// Max returns the maximum of two integers
+func Max(a, b int) int <span class="cov8" title="1">{
+        if a &gt; b </span><span class="cov8" title="1">{
+                return a
+        }</span>
+        <span class="cov8" title="1">return b</span>
+}
+
+// Min returns the minimum of two integers
+func Min(a, b int) int <span class="cov8" title="1">{
+        if a &lt; b </span><span class="cov8" title="1">{
+                return a
+        }</span>
+        <span class="cov8" title="1">return b</span>
+}
+
+// Abs returns the absolute value of an integer
+func Abs(n int) int <span class="cov8" title="1">{
+        if n &lt; 0 </span><span class="cov8" title="1">{
+                return -n
+        }</span>
+        <span class="cov8" title="1">return n</span>
+}
+
+// Power calculates a^b for positive integers
+func Power(base, exp int) int <span class="cov8" title="1">{
+        if exp == 0 </span><span class="cov8" title="1">{
+                return 1
+        }</span>
+        <span class="cov8" title="1">result := 1
+        for i := 0; i &lt; exp; i++ </span><span class="cov8" title="1">{
+                result *= base
+        }</span>
+        <span class="cov8" title="1">return result</span>
+}
+
+// Factorial calculates n! for non-negative integers
+func Factorial(n int) int <span class="cov8" title="1">{
+        if n &lt; 0 </span><span class="cov8" title="1">{
+                return -1
+        }</span>
+        <span class="cov8" title="1">if n == 0 || n == 1 </span><span class="cov8" title="1">{
+                return 1
+        }</span>
+        <span class="cov8" title="1">result := 1
+        for i := 2; i &lt;= n; i++ </span><span class="cov8" title="1">{
+                result *= i
+        }</span>
+        <span class="cov8" title="1">return result</span>
+}
+
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package main
+
+import (
+        "fmt"
+        "io"
+        "os"
+
+        "github.com/test/code-coverage/calculator"
+        "github.com/test/code-coverage/stringutils"
+)
+
+// Run contains the main logic for easier testing
+func Run(w io.Writer) <span class="cov8" title="1">{
+        // Calculator operations
+        sum := calculator.Add(10, 5)
+        diff := calculator.Subtract(10, 5)
+        product := calculator.Multiply(10, 5)
+        quotient, _ := calculator.Divide(10, 5)
+        max := calculator.Max(10, 5)
+        min := calculator.Min(10, 5)
+        abs := calculator.Abs(-10)
+        power := calculator.Power(2, 3)
+        factorial := calculator.Factorial(5)
+        isEven := calculator.IsEven(4)
+
+        fmt.Fprintf(w, "Sum: %d\n", sum)
+        fmt.Fprintf(w, "Difference: %d\n", diff)
+        fmt.Fprintf(w, "Product: %d\n", product)
+        fmt.Fprintf(w, "Quotient: %d\n", quotient)
+        fmt.Fprintf(w, "Max: %d\n", max)
+        fmt.Fprintf(w, "Min: %d\n", min)
+        fmt.Fprintf(w, "Abs: %d\n", abs)
+        fmt.Fprintf(w, "Power: %d\n", power)
+        fmt.Fprintf(w, "Factorial: %d\n", factorial)
+        fmt.Fprintf(w, "IsEven: %v\n", isEven)
+
+        // String operations
+        reversed := stringutils.Reverse("hello")
+        isPalin := stringutils.IsPalindrome("racecar")
+        capitalized := stringutils.Capitalize("hello world")
+        vowels := stringutils.CountVowels("hello")
+        isAlpha := stringutils.IsAlpha("hello")
+        isNumeric := stringutils.IsNumeric("12345")
+        contains := stringutils.Contains("hello world", "world")
+        noSpaces := stringutils.RemoveSpaces("hello world")
+        wordCount := stringutils.WordCount("hello world test")
+        trimmed := stringutils.TrimString("  hello  ")
+
+        fmt.Fprintf(w, "Reversed: %s\n", reversed)
+        fmt.Fprintf(w, "Is palindrome: %v\n", isPalin)
+        fmt.Fprintf(w, "Capitalized: %s\n", capitalized)
+        fmt.Fprintf(w, "Vowels: %d\n", vowels)
+        fmt.Fprintf(w, "IsAlpha: %v\n", isAlpha)
+        fmt.Fprintf(w, "IsNumeric: %v\n", isNumeric)
+        fmt.Fprintf(w, "Contains: %v\n", contains)
+        fmt.Fprintf(w, "No spaces: %s\n", noSpaces)
+        fmt.Fprintf(w, "Word count: %d\n", wordCount)
+        fmt.Fprintf(w, "Trimmed: %s\n", trimmed)
+}</span>
+
+func main() <span class="cov0" title="0">{
+        Run(os.Stdout)
+}</span>
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package stringutils
+
+import (
+        "strings"
+        "unicode"
+)
+
+// Reverse returns the reversed string
+func Reverse(s string) string <span class="cov8" title="1">{
+        runes := []rune(s)
+        for i, j := 0, len(runes)-1; i &lt; j; i, j = i+1, j-1 </span><span class="cov8" title="1">{
+                runes[i], runes[j] = runes[j], runes[i]
+        }</span>
+        <span class="cov8" title="1">return string(runes)</span>
+}
+
+// IsPalindrome checks if a string is a palindrome
+func IsPalindrome(s string) bool <span class="cov8" title="1">{
+        s = strings.ToLower(s)
+        left, right := 0, len(s)-1
+        for left &lt; right </span><span class="cov8" title="1">{
+                if s[left] != s[right] </span><span class="cov8" title="1">{
+                        return false
+                }</span>
+                <span class="cov8" title="1">left++
+                right--</span>
+        }
+        <span class="cov8" title="1">return true</span>
+}
+
+// Capitalize returns a string with the first letter of each word capitalized
+func Capitalize(s string) string <span class="cov8" title="1">{
+        return strings.Title(s)
+}</span>
+
+// CountVowels counts the number of vowels in a string
+func CountVowels(s string) int <span class="cov8" title="1">{
+        vowels := "aeiouAEIOU"
+        count := 0
+        for _, char := range s </span><span class="cov8" title="1">{
+                if strings.ContainsRune(vowels, char) </span><span class="cov8" title="1">{
+                        count++
+                }</span>
+        }
+        <span class="cov8" title="1">return count</span>
+}
+
+// IsAlpha checks if a string contains only alphabetic characters
+func IsAlpha(s string) bool <span class="cov8" title="1">{
+        if len(s) == 0 </span><span class="cov8" title="1">{
+                return false
+        }</span>
+        <span class="cov8" title="1">for _, char := range s </span><span class="cov8" title="1">{
+                if !unicode.IsLetter(char) </span><span class="cov8" title="1">{
+                        return false
+                }</span>
+        }
+        <span class="cov8" title="1">return true</span>
+}
+
+// IsNumeric checks if a string contains only numeric characters
+func IsNumeric(s string) bool <span class="cov8" title="1">{
+        if len(s) == 0 </span><span class="cov8" title="1">{
+                return false
+        }</span>
+        <span class="cov8" title="1">for _, char := range s </span><span class="cov8" title="1">{
+                if !unicode.IsDigit(char) </span><span class="cov8" title="1">{
+                        return false
+                }</span>
+        }
+        <span class="cov8" title="1">return true</span>
+}
+
+// Contains checks if a string contains a substring
+func Contains(s, substr string) bool <span class="cov8" title="1">{
+        return strings.Contains(s, substr)
+}</span>
+
+// RemoveSpaces removes all spaces from a string
+func RemoveSpaces(s string) string <span class="cov8" title="1">{
+        return strings.ReplaceAll(s, " ", "")
+}</span>
+
+// WordCount returns the number of words in a string
+func WordCount(s string) int <span class="cov8" title="1">{
+        words := strings.Fields(s)
+        return len(words)
+}</span>
+
+// TrimString trims leading and trailing spaces
+func TrimString(s string) string <span class="cov8" title="1">{
+        return strings.TrimSpace(s)
+}</span>
+
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
