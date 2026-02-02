@@ -11,6 +11,10 @@ func TestReverse(t *testing.T) {
 		{"a", "a"},
 		{"racecar", "racecar"},
 		{"Go", "oG"},
+		{"12345", "54321"},
+		{"Hello World!", "!dlroW olleH"},
+		{"café", "éfac"},
+		{"こんにちは", "はちにんこ"},
 	}
 
 	for _, tt := range tests {
@@ -32,6 +36,11 @@ func TestIsPalindrome(t *testing.T) {
 		{"Aa", true},
 		{"aba", true},
 		{"abc", false},
+		{"", true},
+		{"noon", true},
+		{"Noon", true},
+		{"12321", true},
+		{"12345", false},
 	}
 
 	for _, tt := range tests {
@@ -71,6 +80,9 @@ func TestCountVowels(t *testing.T) {
 		{"", 0},
 		{"AEIOU", 5},
 		{"Hello World", 3},
+		{"bcdfg", 0},
+		{"AEIOUaeiou", 10},
+		{"The quick brown fox", 5},
 	}
 
 	for _, tt := range tests {
@@ -91,6 +103,9 @@ func TestIsAlpha(t *testing.T) {
 		{"", false},
 		{"ABC", true},
 		{"hello world", false},
+		{"HelloWorld", true},
+		{"test!", false},
+		{"a", true},
 	}
 
 	for _, tt := range tests {
@@ -111,6 +126,9 @@ func TestIsNumeric(t *testing.T) {
 		{"", false},
 		{"123abc", false},
 		{"0", true},
+		{"9876543210", true},
+		{"123.45", false},
+		{"00000", true},
 	}
 
 	for _, tt := range tests {
@@ -130,6 +148,9 @@ func TestContains(t *testing.T) {
 		{"hello", "bye", false},
 		{"", "", true},
 		{"test", "", true},
+		{"hello world", "o w", true},
+		{"test", "TEST", false},
+		{"abc", "abcd", false},
 	}
 
 	for _, tt := range tests {
