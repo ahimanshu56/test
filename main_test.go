@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"os"
 	"strings"
 	"testing"
 )
@@ -43,17 +44,32 @@ func TestRun(t *testing.T) {
 	}
 }
 
-func TestMain(t *testing.T) {
+func TestMainFunction(t *testing.T) {
 	// Test that main function runs without panic
+	// We redirect stdout temporarily to avoid polluting test output
+	oldStdout := os.Stdout
+	_, w, _ := os.Pipe()
+	os.Stdout = w
+
 	defer func() {
+		w.Close()
+		os.Stdout = oldStdout
 		if r := recover(); r != nil {
 			t.Errorf("main() panicked: %v", r)
 		}
 	}()
 
-	// Call main to ensure it works
-	// We can't easily capture stdout, but we can verify it doesn't panic
-	// main()
-	// Note: Commenting out the actual call to avoid interfering with test output
-	t.Log("Main function exists and compiles correctly")
+	// Call main in a goroutine to capture its output
+	done := make(chan bool)
+	go func() {
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("main() panicked: %v", r)
+			}
+			done <- true
+		}()
+		main()
+	}()
+
+	<-done
 }
