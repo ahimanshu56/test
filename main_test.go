@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"os"
 	"strings"
 	"testing"
 )
@@ -56,4 +57,35 @@ func TestMain(t *testing.T) {
 	// main()
 	// Note: Commenting out the actual call to avoid interfering with test output
 	t.Log("Main function exists and compiles correctly")
+}
+
+// TestMainFunction calls main() with stdout redirected to verify it runs correctly.
+func TestMainFunction(t *testing.T) {
+	// Redirect os.Stdout to capture output
+	origStdout := os.Stdout
+	r, w, err := os.Pipe()
+	if err != nil {
+		t.Fatalf("failed to create pipe: %v", err)
+	}
+	os.Stdout = w
+
+	defer func() {
+		os.Stdout = origStdout
+		if rec := recover(); rec != nil {
+			t.Errorf("main() panicked: %v", rec)
+		}
+	}()
+
+	main()
+
+	w.Close()
+	os.Stdout = origStdout
+
+	var buf bytes.Buffer
+	buf.ReadFrom(r)
+	output := buf.String()
+
+	if !strings.Contains(output, "Sum: 15") {
+		t.Errorf("main() output missing expected content, got: %s", output)
+	}
 }
