@@ -43,17 +43,31 @@ func TestRun(t *testing.T) {
 	}
 }
 
-func TestMain(t *testing.T) {
-	// Test that main function runs without panic
+func TestMainFunction(t *testing.T) {
+	// Test that main function runs without panic by calling it directly.
+	// main() calls Run(os.Stdout) which we already test via TestRun.
 	defer func() {
 		if r := recover(); r != nil {
 			t.Errorf("main() panicked: %v", r)
 		}
 	}()
+	main()
+}
 
-	// Call main to ensure it works
-	// We can't easily capture stdout, but we can verify it doesn't panic
-	// main()
-	// Note: Commenting out the actual call to avoid interfering with test output
-	t.Log("Main function exists and compiles correctly")
+func TestRunOutput_NotEmpty(t *testing.T) {
+	var buf bytes.Buffer
+	Run(&buf)
+	if buf.Len() == 0 {
+		t.Error("Run() produced no output")
+	}
+}
+
+func TestRunOutput_LineCount(t *testing.T) {
+	var buf bytes.Buffer
+	Run(&buf)
+	lines := strings.Split(strings.TrimSpace(buf.String()), "\n")
+	// We expect exactly 20 output lines (10 calculator + 10 string util)
+	if len(lines) != 20 {
+		t.Errorf("Run() produced %d lines; want 20", len(lines))
+	}
 }
