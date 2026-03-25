@@ -11,6 +11,9 @@ func TestReverse(t *testing.T) {
 		{"a", "a"},
 		{"racecar", "racecar"},
 		{"Go", "oG"},
+		{"12345", "54321"},
+		{"Hello, World!", "!dlroW ,olleH"},
+		{"ab", "ba"},
 	}
 
 	for _, tt := range tests {
@@ -18,6 +21,14 @@ func TestReverse(t *testing.T) {
 		if result != tt.expected {
 			t.Errorf("Reverse(%q) = %q; want %q", tt.input, result, tt.expected)
 		}
+	}
+}
+
+func TestReverseUnicode(t *testing.T) {
+	// Test with unicode characters
+	result := Reverse("h\u00e9llo")
+	if len(result) == 0 {
+		t.Error("Reverse of unicode string returned empty")
 	}
 }
 
@@ -32,6 +43,10 @@ func TestIsPalindrome(t *testing.T) {
 		{"Aa", true},
 		{"aba", true},
 		{"abc", false},
+		{"", true},
+		{"abba", true},
+		{"abcd", false},
+		{"level", true},
 	}
 
 	for _, tt := range tests {
@@ -50,6 +65,8 @@ func TestCapitalize(t *testing.T) {
 		{"go", "Go"},
 		{"", ""},
 		{"HELLO", "HELLO"},
+		{"a b c", "A B C"},
+		{"one two three", "One Two Three"},
 	}
 
 	for _, tt := range tests {
@@ -71,6 +88,10 @@ func TestCountVowels(t *testing.T) {
 		{"", 0},
 		{"AEIOU", 5},
 		{"Hello World", 3},
+		{"bcdfg", 0},
+		{"a", 1},
+		{"rhythm", 0},
+		{"aAbBEeIiOoUu", 12},
 	}
 
 	for _, tt := range tests {
@@ -91,6 +112,10 @@ func TestIsAlpha(t *testing.T) {
 		{"", false},
 		{"ABC", true},
 		{"hello world", false},
+		{"a", true},
+		{"Z", true},
+		{"123", false},
+		{"abc!", false},
 	}
 
 	for _, tt := range tests {
@@ -111,6 +136,10 @@ func TestIsNumeric(t *testing.T) {
 		{"", false},
 		{"123abc", false},
 		{"0", true},
+		{"9999", true},
+		{"3.14", false},
+		{"-1", false},
+		{"00", true},
 	}
 
 	for _, tt := range tests {
@@ -130,6 +159,10 @@ func TestContains(t *testing.T) {
 		{"hello", "bye", false},
 		{"", "", true},
 		{"test", "", true},
+		{"abcdef", "bcd", true},
+		{"abcdef", "xyz", false},
+		{"", "a", false},
+		{"Hello", "hello", false}, // case sensitive
 	}
 
 	for _, tt := range tests {
@@ -148,6 +181,9 @@ func TestRemoveSpaces(t *testing.T) {
 		{"  test  ", "test"},
 		{"", ""},
 		{"nospaces", "nospaces"},
+		{"a b c d e", "abcde"},
+		{"   ", ""},
+		{"h e l l o", "hello"},
 	}
 
 	for _, tt := range tests {
@@ -168,6 +204,8 @@ func TestWordCount(t *testing.T) {
 		{"", 0},
 		{"  multiple   spaces  ", 2},
 		{"one two three four", 4},
+		{"   ", 0},
+		{"a b c d e f", 6},
 	}
 
 	for _, tt := range tests {
@@ -187,6 +225,9 @@ func TestTrimString(t *testing.T) {
 		{"", ""},
 		{"  ", ""},
 		{"\t\ntest\n\t", "test"},
+		{"   leading", "leading"},
+		{"trailing   ", "trailing"},
+		{"\t\t\t", ""},
 	}
 
 	for _, tt := range tests {
@@ -196,4 +237,3 @@ func TestTrimString(t *testing.T) {
 		}
 	}
 }
-
