@@ -10,6 +10,8 @@ func TestAdd(t *testing.T) {
 		{-1, 1, 0},
 		{0, 0, 0},
 		{100, 200, 300},
+		{-5, -3, -8},
+		{1000000, 1000000, 2000000},
 	}
 
 	for _, tt := range tests {
@@ -28,6 +30,8 @@ func TestSubtract(t *testing.T) {
 		{1, 1, 0},
 		{0, 5, -5},
 		{100, 50, 50},
+		{-5, -3, -2},
+		{0, 0, 0},
 	}
 
 	for _, tt := range tests {
@@ -46,6 +50,8 @@ func TestMultiply(t *testing.T) {
 		{-2, 3, -6},
 		{0, 5, 0},
 		{10, 10, 100},
+		{-4, -4, 16},
+		{1, 1, 1},
 	}
 
 	for _, tt := range tests {
@@ -66,6 +72,9 @@ func TestDivide(t *testing.T) {
 		{10, 5, 2, false},
 		{7, 2, 3, false},
 		{10, 0, 0, true},
+		{0, 5, 0, false},
+		{-10, 2, -5, false},
+		{100, 10, 10, false},
 	}
 
 	for _, tt := range tests {
@@ -85,6 +94,16 @@ func TestDivide(t *testing.T) {
 	}
 }
 
+func TestDivideErrorMessage(t *testing.T) {
+	_, err := Divide(5, 0)
+	if err == nil {
+		t.Fatal("expected error for division by zero, got nil")
+	}
+	if err.Error() != "division by zero" {
+		t.Errorf("expected error message 'division by zero', got %q", err.Error())
+	}
+}
+
 func TestIsEven(t *testing.T) {
 	tests := []struct {
 		n        int
@@ -95,6 +114,9 @@ func TestIsEven(t *testing.T) {
 		{0, true},
 		{-4, true},
 		{-5, false},
+		{1, false},
+		{100, true},
+		{101, false},
 	}
 
 	for _, tt := range tests {
@@ -113,6 +135,8 @@ func TestMax(t *testing.T) {
 		{3, 5, 5},
 		{5, 5, 5},
 		{-1, -5, -1},
+		{0, 0, 0},
+		{-10, 10, 10},
 	}
 
 	for _, tt := range tests {
@@ -131,6 +155,8 @@ func TestMin(t *testing.T) {
 		{3, 5, 3},
 		{5, 5, 5},
 		{-1, -5, -5},
+		{0, 0, 0},
+		{-10, 10, -10},
 	}
 
 	for _, tt := range tests {
@@ -149,6 +175,8 @@ func TestAbs(t *testing.T) {
 		{-5, 5},
 		{0, 0},
 		{-100, 100},
+		{1, 1},
+		{-1, 1},
 	}
 
 	for _, tt := range tests {
@@ -168,6 +196,9 @@ func TestPower(t *testing.T) {
 		{3, 2, 9},
 		{10, 2, 100},
 		{2, 10, 1024},
+		{1, 100, 1},
+		{0, 5, 0},
+		{7, 1, 7},
 	}
 
 	for _, tt := range tests {
@@ -187,6 +218,10 @@ func TestFactorial(t *testing.T) {
 		{5, 120},
 		{6, 720},
 		{-1, -1},
+		{2, 2},
+		{3, 6},
+		{4, 24},
+		{10, 3628800},
 	}
 
 	for _, tt := range tests {
@@ -197,3 +232,9 @@ func TestFactorial(t *testing.T) {
 	}
 }
 
+func TestFactorialNegative(t *testing.T) {
+	result := Factorial(-5)
+	if result != -1 {
+		t.Errorf("Factorial(-5) = %d; want -1", result)
+	}
+}
