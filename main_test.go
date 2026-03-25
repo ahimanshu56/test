@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"os"
 	"strings"
 	"testing"
 )
@@ -43,17 +44,32 @@ func TestRun(t *testing.T) {
 	}
 }
 
-func TestMain(t *testing.T) {
-	// Test that main function runs without panic
+func TestMainFunction(t *testing.T) {
+	// Capture stdout by redirecting os.Stdout to a pipe
+	origStdout := os.Stdout
+	r, w, err := os.Pipe()
+	if err != nil {
+		t.Fatalf("Failed to create pipe: %v", err)
+	}
+	os.Stdout = w
+
 	defer func() {
-		if r := recover(); r != nil {
-			t.Errorf("main() panicked: %v", r)
+		os.Stdout = origStdout
+		if rec := recover(); rec != nil {
+			t.Errorf("main() panicked: %v", rec)
 		}
 	}()
 
-	// Call main to ensure it works
-	// We can't easily capture stdout, but we can verify it doesn't panic
-	// main()
-	// Note: Commenting out the actual call to avoid interfering with test output
-	t.Log("Main function exists and compiles correctly")
+	main()
+
+	w.Close()
+	os.Stdout = origStdout
+
+	var buf bytes.Buffer
+	buf.ReadFrom(r)
+	output := buf.String()
+
+	if !strings.Contains(output, "Sum: 15") {
+		t.Errorf("main() output missing expected content, got: %q", output)
+	}
 }
