@@ -1,2 +1,13 @@
+# Python Web Scraper dependencies
+#
+# Install with:
+#   pip install -r requirements.txt
+
+# HTTP client
 requests>=2.31.0
+
+# HTML parser
 beautifulsoup4>=4.12.0
+
+# Fast C-based HTML parser backend (optional but recommended)
+lxml>=4.9.0
